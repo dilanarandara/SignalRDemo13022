@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    Message to Send : 
+    <input id="txtMessage" type="text" />
+    <input id="btnSend" value="Send" type="button" />
+    <br />
+    <br />
+    <br />
+    <div id="message"></div>
+
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <script src="Scripts/jquery.signalR-1.0.0-rc2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var connection = $.connection("/message");
+
+            connection.start().done(function () {
+                $('#btnSend').click(function () {
+                    var message = $('#txtMessage').val();
+                    connection.send(message);
+                    $('#txtMessage').val('');
+                });
+            });
+
+            connection.received(function (data) {
+                $('#message').append(data + "<br />");
+            });
+        });
+    </script>
+</body>
+</html>
